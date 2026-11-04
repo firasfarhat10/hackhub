@@ -1,0 +1,12 @@
+# Dépendances (recréées par npm install)
+node_modules/
+ 
+# Secrets : ne jamais commiter
+.env
+.env.*
+!.env.example
+ 
+# Builds et journaux
+dist/
+*.log
+.DS_Store

@@ -1,0 +1,30 @@
+{
+  "name": "hackhub-backend",
+  "version": "1.0.0",
+  "description": "API REST de HackHub (MERN + IA)",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "seed": "node scripts/seed.js",
+    "eval:reviews": "node scripts/evalReviews.js",
+    "ai:models": "node scripts/listModels.js"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "dependencies": {
+    "@google/genai": "^2.32.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.11.4",
+    "zod": "^4.6.7"
+  }
+}
