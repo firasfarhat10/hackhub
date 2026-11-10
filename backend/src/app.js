@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const env = require('./config/env');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
+const { isAiEnabled } = require('./services/ai/geminiClient');
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.json({ limit: '100kb' })); // lit le JSON du body, taille limit�
 
 // Santé de l'API (utile pour Render et pour réveiller le service avant une démo)
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString() });
+    res.json({ status: 'ok', ai: isAiEnabled() ? 'enabled' : 'disabled', time: new Date().toISOString() });
 });
 
 // Toujours en dernier : 404 puis gestion centralisée des erreurs
