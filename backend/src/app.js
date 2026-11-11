@@ -20,7 +20,8 @@ app.use(express.json({ limit: '100kb' })); // lit le JSON du body, taille limit√
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', ai: isAiEnabled() ? 'enabled' : 'disabled', time: new Date().toISOString() });
 });
-
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/profile', require('./routes/profileRoutes'));
 // Toujours en dernier : 404 puis gestion centralis√©e des erreurs
 app.use(notFound);
 app.use(errorHandler);
