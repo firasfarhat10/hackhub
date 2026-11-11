@@ -1,20 +1,44 @@
+import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from './store/authSlice';
+import { fetchMe } from './store/authSlice';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 export default function App() {
-  const { user, status, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { token, initialized } = useSelector((state) => state.auth);
+
+  // Restauration de la session au chargement : un jeton existe, est-il encore valide ?
+  useEffect(() => {
+    if (token && !initialized) dispatch(fetchMe());
+  }, [token, initialized, dispatch]);
 
   return (
-    <div style={{ padding: 24 }}>
-      <h1>HackHub : test du store</h1>
-      <p>Utilisateur : {user ? `${user.name} (${user.role})` : 'visiteur'}</p>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={() => dispatch(login({ email: 'aya@hackhub.tn', password: 'Member2026!' }))}>
-        {status === 'loading' ? 'Connexion...' : 'Se connecter en Aya'}
-      </button>{' '}
-      <button onClick={() => dispatch(login({ email: 'aya@hackhub.tn', password: 'faux' }))}>Mauvais mot de passe</button>{' '}
-      <button onClick={() => dispatch(logout())}>Deconnexion</button>
-    </div>
+    <>
+      <Navbar />
+      <main className="container">
+        <Routes>
+          {/* Routes publiques */}
+          <Route path="/" element={<h1>Evenements (etape F4)</h1>} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Routes privées : connexion obligatoire */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<h1>Mon profil (etape F5)</h1>} />
+          </Route>
+
+          {/* Routes admin */}
+          <Route element={<ProtectedRoute adminOnly />}>
+            <Route path="/admin" element={<h1>Administration (etape F6)</h1>} />
+          </Route>
+
+          <Route path="*" element={<h1>Page introuvable</h1>} />
+        </Routes>
+      </main>
+    </>
   );
 }
