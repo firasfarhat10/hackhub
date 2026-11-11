@@ -22,6 +22,8 @@ app.get('/api/health', (req, res) => {
 });
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/profile', require('./routes/profileRoutes'));
+app.use('/api/events', require('./routes/eventRoutes'));
+app.use('/api/workshops', require('./routes/workshopRoutes'));
 // Toujours en dernier : 404 puis gestion centralisée des erreurs
 app.use(notFound);
 app.use(errorHandler);
