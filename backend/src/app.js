@@ -24,6 +24,8 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/profile', require('./routes/profileRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/workshops', require('./routes/workshopRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 // Toujours en dernier : 404 puis gestion centralisée des erreurs
 app.use(notFound);
 app.use(errorHandler);

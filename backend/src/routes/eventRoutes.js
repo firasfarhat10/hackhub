@@ -2,6 +2,9 @@ const express = require('express');
 const ev = require('../controllers/eventController');
 const ws = require('../controllers/workshopController');
 const { protect, adminOnly, optionalAuth } = require('../middlewares/auth');
+const rv = require('../controllers/reviewController');
+const { getMatches } = require('../controllers/matchController');
+const { aiLimiter } = require('../middlewares/rateLimit');
 
 const router = express.Router();
 
@@ -21,5 +24,12 @@ router.delete('/:id/register', protect, ev.unregisterFromEvent);
 // Ateliers d'un événement (ressource imbriquée)
 router.get('/:eventId/workshops', optionalAuth, ws.listByEvent);
 router.post('/:eventId/workshops', protect, adminOnly, ws.createWorkshop);
+// Avis (étape 7)
+router.get('/:eventId/reviews/insights', protect, adminOnly, aiLimiter, rv.getInsights);
+router.get('/:eventId/reviews', optionalAuth, rv.listByEvent);
+router.post('/:eventId/reviews', protect, rv.createReview);
+
+// Matching IA (étape 7)
+router.get('/:eventId/matches', protect, aiLimiter, getMatches);
 
 module.exports = router;
