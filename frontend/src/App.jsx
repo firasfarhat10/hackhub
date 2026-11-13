@@ -4,8 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMe } from './store/authSlice';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import HomePage from './pages/HomePage';
+import EventDetailPage from './pages/EventDetailPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import MyEventsPage from './pages/MyEventsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -22,13 +26,15 @@ export default function App() {
       <main className="container">
         <Routes>
           {/* Routes publiques */}
-          <Route path="/" element={<h1>Evenements (etape F4)</h1>} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Routes privées : connexion obligatoire */}
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<h1>Mon profil (etape F5)</h1>} />
+            <Route path="/my-events" element={<MyEventsPage />} />
           </Route>
 
           {/* Routes admin */}
@@ -36,7 +42,7 @@ export default function App() {
             <Route path="/admin" element={<h1>Administration (etape F6)</h1>} />
           </Route>
 
-          <Route path="*" element={<h1>Page introuvable</h1>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
     </>
