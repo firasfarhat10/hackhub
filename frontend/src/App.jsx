@@ -8,7 +8,9 @@ import HomePage from './pages/HomePage';
 import EventDetailPage from './pages/EventDetailPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ProfilePage from './pages/ProfilePage';
 import MyEventsPage from './pages/MyEventsPage';
+import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
@@ -33,13 +35,13 @@ export default function App() {
 
           {/* Routes privées : connexion obligatoire */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<h1>Mon profil (etape F5)</h1>} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/my-events" element={<MyEventsPage />} />
           </Route>
 
           {/* Routes admin */}
           <Route element={<ProtectedRoute adminOnly />}>
-            <Route path="/admin" element={<h1>Administration (etape F6)</h1>} />
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

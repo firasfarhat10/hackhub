@@ -6,6 +6,8 @@ import useFetch from '../hooks/useFetch';
 import { selectUser } from '../store/authSlice';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
+import MatchSection from '../components/MatchSection';
+import ReviewSection from '../components/ReviewSection';
 
 const formatDateTime = (iso) =>
   new Date(iso).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' });
@@ -33,6 +35,7 @@ export default function EventDetailPage() {
 
   const now = new Date();
   const isOpen = event.status === 'published' && new Date(event.endDate) > now;
+  const hasStarted = new Date(event.startDate) <= now;
 
   return (
     <div className="detail">
@@ -89,6 +92,11 @@ export default function EventDetailPage() {
           ))}
         </ul>
       </section>
+
+      {/* La section IA n'existe que pour un participant */}
+      {user && event.isRegistered && <MatchSection eventId={id} />}
+
+      <ReviewSection eventId={id} userId={user?._id} canReview={Boolean(user && event.isRegistered && hasStarted)} />
     </div>
   );
 }
