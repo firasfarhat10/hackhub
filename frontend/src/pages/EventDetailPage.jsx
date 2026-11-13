@@ -8,6 +8,8 @@ import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 import MatchSection from '../components/MatchSection';
 import ReviewSection from '../components/ReviewSection';
+import Avatar from '../components/Avatar';
+import { coverStyle, getPhase } from '../utils/display';
 
 const formatDateTime = (iso) =>
   new Date(iso).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' });
@@ -36,18 +38,21 @@ export default function EventDetailPage() {
   const now = new Date();
   const isOpen = event.status === 'published' && new Date(event.endDate) > now;
   const hasStarted = new Date(event.startDate) <= now;
+  const phase = getPhase(event, now);
 
   return (
     <div className="detail">
       <Link to="/" className="muted">← Tous les evenements</Link>
 
-      <section className="card">
-        <span className={`badge badge-${event.status}`}>{event.status}</span>
+      <section className="card detail-hero">
+        <div className="cover cover-lg" style={coverStyle(event)}>
+          <span className={`phase phase-${phase.key}`}>{phase.label}</span>
+        </div>
         <h1>{event.title}</h1>
-        <p>{event.description}</p>
-        <p className="muted">
+        <p className="mono small muted">
           {formatDateTime(event.startDate)} → {formatDateTime(event.endDate)} • {event.location}
         </p>
+        <p>{event.description}</p>
         <p><strong>{event.participantsCount} / {event.capacity}</strong> inscrits</p>
 
         {!user && isOpen && <p><Link to="/login">Connectez-vous</Link> pour vous inscrire.</p>}
@@ -66,7 +71,10 @@ export default function EventDetailPage() {
 
         {/* N:N peuplée : les noms des participants */}
         {event.participants.length > 0 && (
-          <p className="small muted">Participants : {event.participants.map((p) => p.name).join(', ')}</p>
+          <div className="avatar-stack">
+            {event.participants.slice(0, 10).map((p) => <Avatar key={p._id} name={p.name} size={34} />)}
+            {event.participants.length > 10 && <span className="avatar avatar-more">+{event.participants.length - 10}</span>}
+          </div>
         )}
       </section>
 

@@ -2,6 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectUser, selectIsAdmin } from '../store/authSlice';
 import { useTheme } from '../context/ThemeContext';
+import Avatar from './Avatar';
 
 export default function Navbar() {
   const user = useSelector(selectUser);
@@ -17,7 +18,7 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="brand">Hack<span>Hub</span></Link>
+      <Link to="/" className="brand"><span className="brand-mark mono">&lt;/&gt;</span>Hack<span>Hub</span></Link>
 
       <div className="nav-links">
         <NavLink to="/" end>Evenements</NavLink>
@@ -33,7 +34,7 @@ export default function Navbar() {
         </button>
         {user ? (
           <>
-            <span className="nav-user">{user.name}</span>
+            <Link to="/profile" className="nav-user"><Avatar name={user.name} size={30} />{user.name}</Link>
             <button className="btn btn-outline" onClick={handleLogout}>Deconnexion</button>
           </>
         ) : (

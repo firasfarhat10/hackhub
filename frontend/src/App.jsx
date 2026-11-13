@@ -47,6 +47,7 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
+      <footer className="footer mono">HackHub · Projet MERN + IA · 2026-2027</footer>
     </>
   );
 }

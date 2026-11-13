@@ -1,6 +1,7 @@
 import useFetch from '../hooks/useFetch';
 import Loader from './Loader';
 import ErrorMessage from './ErrorMessage';
+import Avatar from './Avatar';
 
 // Suggestions IA : coéquipiers complémentaires et ateliers recommandés
 export default function MatchSection({ eventId }) {
@@ -19,8 +20,8 @@ export default function MatchSection({ eventId }) {
         {data.teammates.map((t) => (
           <div key={t.user._id} className="match-card">
             <div className="match-head">
-              <strong>{t.user.name}</strong>
-              <span className="score">{Math.round(t.score * 100)} %</span>
+              <span className="match-name"><Avatar name={t.user.name} size={30} /><strong>{t.user.name}</strong></span>
+              <span className="score mono">{Math.round(t.score * 100)} %</span>
             </div>
             <div className="bar"><div style={{ width: `${Math.round(t.score * 100)}%` }} /></div>
             {t.brings.length > 0 && <p className="small">Vous apporte : {t.brings.join(', ')}</p>}

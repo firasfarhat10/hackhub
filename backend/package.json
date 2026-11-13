@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "seed": "node scripts/seed.js",
     "eval:reviews": "node scripts/evalReviews.js",
-    "ai:models": "node scripts/listModels.js"
+    "ai:models": "node scripts/listModels.js",
+    "ai:reanalyze": "node scripts/reanalyzeReviews.js"
   },
   "license": "MIT",
   "type": "commonjs",

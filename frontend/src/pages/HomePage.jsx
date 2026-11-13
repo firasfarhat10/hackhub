@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEvents, toggleRegistration, setUpcoming } from '../store/eventsSlice';
 import { selectUser } from '../store/authSlice';
 import EventCard from '../components/EventCard';
-import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 
 export default function HomePage() {
@@ -22,10 +22,25 @@ export default function HomePage() {
 
   return (
     <div>
+      <section className="hero">
+        <p className="hero-kicker mono">{'// club hackathon · Polytechnique Sousse'}</p>
+        <h1>Code. Collabore. <span className="gradient-text">Innove.</span></h1>
+        <p className="hero-text">
+          Inscris-toi aux hackathons du club, trouve des coequipiers complementaires grace a l'IA
+          et partage ton experience.
+        </p>
+        {!user && (
+          <div className="hero-actions">
+            <Link to="/register" className="btn btn-primary btn-lg">Rejoindre le club</Link>
+            <Link to="/login" className="btn btn-outline btn-lg">Se connecter</Link>
+          </div>
+        )}
+      </section>
+
       <header className="page-header">
         <div>
-          <h1>Hackathons du club</h1>
-          <p className="muted">Inscrivez-vous, trouvez votre equipe grace a l'IA et partagez votre avis.</p>
+          <h2>Evenements</h2>
+          <p className="muted small">{pagination.total} evenement(s)</p>
         </div>
         <label className="toggle">
           <input type="checkbox" checked={upcoming} onChange={(e) => dispatch(setUpcoming(e.target.checked))} />
@@ -34,21 +49,19 @@ export default function HomePage() {
       </header>
 
       <ErrorMessage message={error} />
-      {status === 'loading' && items.length === 0 ? (
-        <Loader />
-      ) : (
-        <div className="grid">
-          {items.map((event) => (
-            <EventCard
-              key={event._id}
-              event={event}
-              user={user}
-              onToggle={handleToggle}
-              error={actionError?.id === event._id ? actionError.message : null}
-            />
-          ))}
-        </div>
-      )}
+      <div className="grid">
+        {status === 'loading' && items.length === 0
+          ? [1, 2, 3].map((n) => <div key={n} className="card skeleton" />) // squelettes pendant le chargement
+          : items.map((event) => (
+              <EventCard
+                key={event._id}
+                event={event}
+                user={user}
+                onToggle={handleToggle}
+                error={actionError?.id === event._id ? actionError.message : null}
+              />
+            ))}
+      </div>
       {status !== 'loading' && items.length === 0 && <p className="muted">Aucun evenement pour le moment.</p>}
 
       {pagination.pages > 1 && (

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import api, { getErrorMessage } from '../api/axios';
 import useFetch from '../hooks/useFetch';
 import ErrorMessage from './ErrorMessage';
+import Avatar from './Avatar';
 
 const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
 
@@ -62,7 +63,7 @@ export default function ReviewSection({ eventId, canReview, userId }) {
         {reviews?.map((r) => (
           <li key={r._id}>
             <div className="review-head">
-              <strong>{r.user?.name}</strong>
+              <span className="match-name"><Avatar name={r.user?.name} size={28} /><strong>{r.user?.name}</strong></span>
               <span className="stars">{stars(r.rating)}</span>
             </div>
             <p>{r.comment}</p>
